@@ -12,9 +12,21 @@ public class SparkR {
         // if servidor web esta apagado, arrancarlo
         // almacenar path y funcion en registro de funciones
         direcciones.put(path, function);
-
         System.out.println(direcciones.keySet());
         
-        
     }
+
+    public static String get(String path){
+        String[] partes = path.split("\\/");
+        String ruta = "";
+        String argumento = partes[partes.length-1];
+        for(int i = 1 ; i<partes.length-1; i++){
+            ruta += "/" + partes[i];
+        }
+        // System.out.println("ruta: " + ruta + "  Arg = "+ argumento);
+        BiFunction<String, String, String> function  = direcciones.get(ruta);
+        String response = function.apply(argumento, null);
+        return response;
+    }
+    
 }

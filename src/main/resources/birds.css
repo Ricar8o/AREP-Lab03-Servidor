@@ -1,0 +1,20 @@
+img {
+    display:block;
+    margin:auto;
+}
+
+h1{
+    text-align: center;
+    color: #017c16;
+    font-size: 300%;
+}
+
+body{
+    background-color: #fdf8de;
+}
+
+ol{
+    display: inline-block; 
+    text-align: left;
+}
+div { text-align: center; }

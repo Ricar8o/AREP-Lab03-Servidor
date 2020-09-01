@@ -1,3 +1,5 @@
 function square(number) {
-    return number * number;
+    var cuad = number * number
+    console.log(cuad);
+    
   }
