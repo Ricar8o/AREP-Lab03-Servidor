@@ -166,9 +166,9 @@ public class HttpServer {
         String[] lista = req.split("\\.");
         String tipo = lista[lista.length-1];
         if( Arrays.asList(imagenes).contains(tipo) ){
-             header += "Content-Type: image/" + tipo +"\r\n";
+             header += "Content-Type: image/" + tipo +"\r\n" + "\r";
         }else if (Arrays.asList(textos).contains(tipo)){
-             header += "Content-Type: text/" + tipo +"\r\n" ;
+             header += "Content-Type: text/" + tipo +"\r\n" + "\r\n";
         }
         
         return header;
