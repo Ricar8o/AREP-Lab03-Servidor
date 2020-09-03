@@ -10,9 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 /**
  * @author Ricar8o
  * @version 1.0
@@ -28,11 +25,16 @@ public class SparkRController {
     private Statement statement;
     private Connection connection;
 
+    /**
+     * Constructor
+     */
     public SparkRController() {
         this.tryConnect();
         this.updateFuntionsToSparkR();
     }
-
+    /**
+     * Metodo para probar la conexion a la base de datos.
+     */
     public void tryConnect(){
         String url = "";
         try {
@@ -53,9 +55,13 @@ public class SparkRController {
             System.out.println("Error al conectar con la base de datos de PostgreSQL (" + url + "): " + sqle);
         }
     }
-
+    /**
+     * Metodo que carga las funciones a SparkR
+     */
     private void updateFuntionsToSparkR() {
         SparkR.get("/books", (req,res) -> getBooksInfo(req,res));
+        SparkR.get("/booksByAuthor", (req,res) -> getBooksByAuthor(req,res));
+        SparkR.get("/booksByYear", (req,res) -> getBooksByYear(req,res));
     }
     
     /**
@@ -68,9 +74,27 @@ public class SparkRController {
     }
 
     /**
-     * Metodo para a la base de datos.
-     * 
+     * Consultar toda la informacion de los libros ordenados por autor.
      * @return
+     */
+    public String getBooksByAuthor(String req, String res){
+        String select ="SELECT autor, codigo, titulo, año FROM public.libros ORDER BY autor";
+        return makeSelect(select);
+    }
+
+    /**
+     * Consultar toda la informacion de los libros ordenados por año de publicacion.
+     * @return
+     */
+    public String getBooksByYear(String req, String res){
+        String select ="SELECT año, codigo, titulo, autor FROM public.libros ORDER BY año";
+        return makeSelect(select);
+    }
+
+    /**
+     * Metodo para hacer una consulta a la base de datos.
+     * @param select Consulta 
+     * @return respuesta de la consulta.
      */
     public String makeSelect(String select) {
         try {
@@ -79,24 +103,24 @@ public class SparkRController {
             ResultSetMetaData rMetaData = resultSet.getMetaData();
             List<String> nombres = new ArrayList<String>();
             int numCol = rMetaData.getColumnCount();
+            String consulta = "";
             for(int i = 1; i<= numCol;i++){
                 nombres.add(rMetaData.getColumnName(i));
+                // consulta += rMetaData.getColumnName(i) + ", ";
             }
-            String consulta = "";
+            // consulta += "\n";
             while (resultSet.next()) {
                 String linea = "";
                 for(int i = 0; i<numCol-1;i++){
-                    linea += nombres.get(i) + ": " + resultSet.getString(nombres.get(i)) + ", ";
+                    linea +=  resultSet.getString(nombres.get(i)) + ", ";
                 }
-                linea += nombres.get(numCol-1) + ": " + resultSet.getString(nombres.get(numCol-1)) ;
+                linea += resultSet.getString(nombres.get(numCol-1)) ;
                 consulta += linea + "\n";
             }
-            System.out.println(consulta);
             return consulta;
  
         }catch (SQLException e) {
             System.out.println("Connection failure.");
-            // e.printStackTrace();
             return "Consulta Fallida";
         }
     }

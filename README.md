@@ -9,7 +9,7 @@ El ejercicio consiste en construir un servidor Web (tipo Apache) en Java. El ser
 ## Comenzando 
 Para obtener una copia local del repositorio puede ejecutar la siguiente línea en la consola de comandos.
     
-    git clone https://github.com/Ricar8o/AREP-LAB04-Spring.git
+    git clone https://github.com/Ricar8o/AREP-Lab03-Servidor.git
 
 ## Pre-requisitos
 
@@ -53,6 +53,8 @@ En el repositorio se encuentra un archivo llamado [Procfile](/Procfile).
 
 Si esta en linux deberia ejecutarse sin problema, en el caso de que este en windows basta con borrar la parte "$JAVA_OPTS".
  
+
+ 
 ## Desplegando de manera local
 
 Para el ejemplo lo demostraremos con heroku.
@@ -79,8 +81,30 @@ Si quiere ver como funciona la pagina de este repositorio de click al botón.
 
 o vaya a https://radiant-sands-89858.herokuapp.com.
 
-### Advertencia
-El sitio de heroku se cae seguido.
+
+## Despliegue Circleci
+[![CircleCI](https://circleci.com/gh/Ricar8o/AREP-Lab03-Servidor.svg?style=svg)](https://app.circleci.com/pipelines/github/Ricar8o/Ricar8o/AREP-Lab03-Servidor)
+
+## Documentación
+
+La documentacion se encuentra en la carpeta del repositorio llamada [docs](docs), pero en caso de que quiera generarla tiene las siguientes opciones.
+
+### Maven
+Para generar la documentacion con Maven puede ejecutar cualquiera de los siguientes comandos.
+
+*        mvn javadoc:javadoc
+*        mvn javadoc:jar
+
+
+### Java
+Si quiere generarla usando java puede hacerlo con el siguiente comando.
+
+*       javadoc -d docs src\main\java\co\edu\escuelaing\arep\sparkr\*.java src\main\java\co\edu\escuelaing\arep\sparkr\httpserver\*.java
+
+## PDF Diseño
+
+[Arep_Lab_3.PDF](Arep_Lab_3.pdf)
+
 
 
 ## Autor 

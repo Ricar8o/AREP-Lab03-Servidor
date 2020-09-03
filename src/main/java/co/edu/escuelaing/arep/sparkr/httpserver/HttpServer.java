@@ -108,14 +108,15 @@ public class HttpServer {
         if(request.get("requestLine") != null){
             String[] requestLine = request.get("requestLine").split(" ");
             PrintWriter printWriter = new PrintWriter(out,true);
-            if(requestLine[1].contains(".")){
-                byte contenido[] = getResource(requestLine[1]);
+            String ruta = requestLine[1];
+            if (ruta.length() == 1 ){ruta = "/index.html";}
+            if(ruta.contains(".")){
+                byte contenido[] = getResource(ruta);
                 if(contenido != null ){
                     notFound = false;
-                    outputLine = "HTTP/1.1 200 OK\r\n" + generateTypeHeader(requestLine[1]);
+                    outputLine = "HTTP/1.1 200 OK\r\n" + generateTypeHeader(ruta);
                     printWriter.println(outputLine);
                     out.write(contenido);
-                    
                 }
             }else {
                 try {
@@ -208,6 +209,11 @@ public class HttpServer {
         return 36000; //returns default port if heroku-port isn't set (i.e. on localhost)
     }
 
+    /**
+     * Metodo para obtener la respuesta de SparkR
+     * @param path Ruta que se quiere buscar.
+     * @param out Printwriter del cliente sobre el que se escribira la respuesta.
+     */
     private void getSparkRResponse(String path, PrintWriter out) {
 
         String response = SparkR.get(path) ;
