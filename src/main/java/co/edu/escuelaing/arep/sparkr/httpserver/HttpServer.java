@@ -121,7 +121,6 @@ public class HttpServer {
                 try {
                     URI uri = new URI(requestLine[1]);
                     if (uri.getPath().startsWith("/api")){
-                        // System.out.println("HOLAAA " + uri.getPath().substring(4));
                         getSparkRResponse(uri.getPath().substring(4), printWriter);
                         notFound = false;
                     }
@@ -191,7 +190,6 @@ public class HttpServer {
         }else{
             contenido = null;
         }
-        System.out.println(contenido);
         return contenido;
 
     }
