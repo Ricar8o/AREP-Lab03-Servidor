@@ -83,7 +83,7 @@ o vaya a https://radiant-sands-89858.herokuapp.com.
 
 
 ## Despliegue Circleci
-[![CircleCI](https://circleci.com/gh/Ricar8o/AREP-Lab03-Servidor.svg?style=svg)](https://app.circleci.com/pipelines/github/Ricar8o/Ricar8o/AREP-Lab03-Servidor)
+[![CircleCI](https://circleci.com/gh/Ricar8o/AREP-Lab03-Servidor.svg?style=svg)](https://app.circleci.com/pipelines/github/Ricar8o/AREP-Lab03-Servidor)
 
 ## Documentación
 
