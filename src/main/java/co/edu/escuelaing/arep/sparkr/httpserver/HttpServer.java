@@ -210,22 +210,19 @@ public class HttpServer {
 
     private void getSparkRResponse(String path, PrintWriter out) {
 
-        String header = "HTTP/1.1 200 OK\r\n"
-        + "Content-Type: application/json\r\n"
-        + "\r\n";
-        
         String response = SparkR.get(path) ;
-        String content = "HTTP/1.1 200 OK\r\n" 
+        if (response != null){
+            String response2 = response.replace("\n", " <br>");
+            String content = "HTTP/1.1 200 OK\r\n"
                     + "Content-Type: text/html\r\n" + "\r\n" 
                     + "<!DOCTYPE html>\n"
                     + "<html>\n" + "<head>\n" + "<meta charset=\"UTF-8\">\n" + "<title>response</title>\n"
                     + "</head>\n" 
                     + "<body>\n"
-                    + "<p>" + response + "</p>"
+                    + "<p>" + response2 + "</p>"
                     + "</body>\n"
                     + "</html>\n";
-        if (response != null){
-            out.println(header + response);
+            out.println(content);
         }else{
             throw new NullPointerException();
         }

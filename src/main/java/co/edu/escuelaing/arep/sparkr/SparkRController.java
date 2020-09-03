@@ -10,7 +10,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 /**
  * @author Ricar8o
  * @version 1.0
@@ -82,14 +84,13 @@ public class SparkRController {
             }
             String consulta = "";
             while (resultSet.next()) {
-                String linea = "{";
+                String linea = "";
                 for(int i = 0; i<numCol-1;i++){
                     linea += nombres.get(i) + ": " + resultSet.getString(nombres.get(i)) + ", ";
                 }
                 linea += nombres.get(numCol-1) + ": " + resultSet.getString(nombres.get(numCol-1)) ;
-                consulta += linea + "}";
+                consulta += linea + "\n";
             }
-            consulta += "";
             System.out.println(consulta);
             return consulta;
  
