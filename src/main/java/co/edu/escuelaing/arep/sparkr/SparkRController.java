@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 
 // import org.postgresql.Driver;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ricar8o
@@ -25,24 +28,7 @@ public class SparkRController {
 
     public SparkRController() {
         this.tryConnect();
-        this.updateFuntions();
-    }
-    /**
-     *  Metodo para crear la conexion a la base de datos.
-     */
-    public void test() {
-        try {
-            statement = this.connection.createStatement();
-            System.out.printf("%-30.30s  %-30.30s%n", "Titulo", "Autor");
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM public.libros");
-            while (resultSet.next()) {
-                System.out.printf("%-30.30s  %-30.30s%n", resultSet.getString("titulo"), resultSet.getString("autor"));
-            }
- 
-        }catch (SQLException e) {
-            System.out.println("Connection failure.");
-            // e.printStackTrace();
-        }
+        this.updateFuntionsToSparkR();
     }
 
     public void tryConnect(){
@@ -66,7 +52,52 @@ public class SparkRController {
         }
     }
 
-    private void updateFuntions() {
+    private void updateFuntionsToSparkR() {
+        SparkR.get("/books", (req,res) -> getBooksInfo(req,res));
+    }
+    
+    /**
+     * Consultar toda la informacion de los libros.
+     * @return
+     */
+    public String getBooksInfo(String req, String res){
+        String select ="SELECT * FROM public.libros";
+        return makeSelect(select);
+    }
+
+    /**
+     * Metodo para a la base de datos.
+     * 
+     * @return
+     */
+    public String makeSelect(String select) {
+        try {
+            statement = this.connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            ResultSetMetaData rMetaData = resultSet.getMetaData();
+            List<String> nombres = new ArrayList<String>();
+            int numCol = rMetaData.getColumnCount();
+            for(int i = 1; i<= numCol;i++){
+                nombres.add(rMetaData.getColumnName(i));
+            }
+            String consulta = "";
+            while (resultSet.next()) {
+                String linea = "{";
+                for(int i = 0; i<numCol-1;i++){
+                    linea += nombres.get(i) + ": " + resultSet.getString(nombres.get(i)) + ", ";
+                }
+                linea += nombres.get(numCol-1) + ": " + resultSet.getString(nombres.get(numCol-1)) ;
+                consulta += linea + "}";
+            }
+            consulta += "";
+            System.out.println(consulta);
+            return consulta;
+ 
+        }catch (SQLException e) {
+            System.out.println("Connection failure.");
+            // e.printStackTrace();
+            return "Consulta Fallida";
+        }
     }
     
 }

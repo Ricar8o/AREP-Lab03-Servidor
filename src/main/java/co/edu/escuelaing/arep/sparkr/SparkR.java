@@ -23,10 +23,33 @@ public class SparkR {
         for(int i = 1 ; i<partes.length-1; i++){
             ruta += "/" + partes[i];
         }
-        // System.out.println("ruta: " + ruta + "  Arg = "+ argumento);
-        BiFunction<String, String, String> function  = direcciones.get(ruta);
-        String response = function.apply(argumento, null);
+        String response = null;
+        BiFunction<String, String, String> function = null;
+        if(validate(ruta, argumento)){
+            if (direcciones.containsKey(ruta)){
+                function  = direcciones.get(ruta);
+                response = function.apply(argumento, "");
+            }else if (direcciones.containsKey(ruta+"/"+argumento)){
+                function  = direcciones.get(ruta+"/"+argumento);
+                response = function.apply("", "");
+            }
+            // System.out.println("ruta: " + ruta + "  Arg = "+ argumento);
+        }
+        
         return response;
+    }  
+
+    private static boolean validate(String ruta, String argumento) {
+        int cont = 0;
+        if (direcciones.containsKey(ruta)){
+            cont +=1;
+        }if (direcciones.containsKey(ruta+"/"+argumento)){
+            cont +=1;
+        }
+        boolean resp = false;
+        if (cont==1){
+            resp = true;
+        }     
+        return resp; 
     }
-    
 }
