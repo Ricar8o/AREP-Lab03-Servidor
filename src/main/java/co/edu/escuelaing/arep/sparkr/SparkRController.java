@@ -22,7 +22,6 @@ public class SparkRController {
     private String user  = "brvqrihdjwuaav";
     private String password = "04ae4f64d8af11b91e8288e47188e3f2d06f6063478150994b50ca052ec3aeee";
 
-    private Statement statement;
     private Connection connection;
 
     /**
@@ -98,7 +97,7 @@ public class SparkRController {
      */
     public String makeSelect(String select) {
         try {
-            statement = this.connection.createStatement();
+            Statement statement = this.connection.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
             ResultSetMetaData rMetaData = resultSet.getMetaData();
             List<String> nombres = new ArrayList<String>();
@@ -121,6 +120,7 @@ public class SparkRController {
  
         }catch (SQLException e) {
             System.out.println("Connection failure.");
+            tryConnect();
             return "Consulta Fallida";
         }
     }
